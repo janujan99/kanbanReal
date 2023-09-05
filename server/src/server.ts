@@ -8,10 +8,11 @@ function getDeepCopy(arg: any){
 
 const app = express();
 const PORT = 3001;
+app.use(express.json());
 app.use(cors());
 
-let boardsFromBackend: (Board | null)[] = [{name: "Sobriety", id: 0, nextColumnId: 0, columns: [null, {name: "opportunity", id: 0, nextTaskId: 0, tasks: [{title: "Look for clubs", description: "idk", id: 0, nextSubTaskId: 0, subTasks: []}]}]}, null, {name: "Toronto", id: 0, nextColumnId: 0, columns: [null, {name: "Be Better", id: 0, nextTaskId: 0, tasks: [{title: "Look for clubs", description: "idk", id: 0, nextSubTaskId: 0, subTasks: []}]}]}];
-
+let boardsFromBackend: (Board | null)[] = [];
+let nextBoardId: number = 0;
 app.get('/getBoards', (req: Request, res: Response) => {
   let filteredBoards: FrontEndBoard[] = [];
   //filter out null boards, columns, tasks, subtasks for frontend
@@ -40,6 +41,17 @@ app.get('/getBoards', (req: Request, res: Response) => {
     }
   }
   res.status(200).json({ boards: filteredBoards });
+});
+
+app.post('/addBoard', (req: Request, res: Response) => {
+  console.log("Board ID: " + nextBoardId.toString());
+  console.log(req.body);
+  let newBoard: Board = {name: req.body.name, id: nextBoardId, nextColumnId: 0, columns: req.body.columns}
+  boardsFromBackend.push(newBoard);
+  // Process the received data (you can add your own logic here)
+  nextBoardId += 1;
+  console.log(boardsFromBackend);
+  res.status(200).send({id: nextBoardId-1});
 });
 
 app.listen(PORT, () => {

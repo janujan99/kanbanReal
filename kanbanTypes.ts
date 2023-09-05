@@ -1,4 +1,4 @@
-//Useful interfaces
+//Back end structures
 export interface Board {
     name: string;
     id: number;
@@ -23,6 +23,7 @@ export interface Board {
     id: number;
     isCompleted: boolean;
   }
+  //Front end structures
   export interface FrontEndColumn {
     name: string;
     id: number;
@@ -46,4 +47,9 @@ export interface Board {
     title: string;
     id: number;
     isCompleted: boolean;
+  }
+  //Request structures
+  export interface AddBoardRequest{
+    name: string;
+    columns: string[];
   }

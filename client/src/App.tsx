@@ -6,6 +6,7 @@ import axios from "axios";
 import LeftDrawer from "./LeftDrawer";
 import NavDropDown from "./NavDropDown";
 import useStore from "./store";
+import BoardCreationModal from "./BoardCreationModal";
 function App() {
   const store = useStore();
   const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth <= 768);
@@ -27,8 +28,8 @@ function App() {
   useEffect(() => {
     store.fetchBoards();
     console.log("useEffect");
-  }, [store]);
-
+  }, []);
+  
   return (
     <div className="App">
       <header className="App-header">
@@ -50,6 +51,7 @@ function App() {
             {store.boards.length > 0 && <BoardDisplay />}
           </div>
         )}
+        <BoardCreationModal />
         {isMobile && (
           <div
             style={{
