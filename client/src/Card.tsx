@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 interface CardProps{
     name: string;
     description: string;
+    id: number;
 }
 export default function OutlinedCard(props: CardProps) {
   return (

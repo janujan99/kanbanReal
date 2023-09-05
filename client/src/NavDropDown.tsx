@@ -4,12 +4,11 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
 import { Board } from "../../kanbanTypes";
+import useStore from "./store";
 
-interface NavDropDownProps {
-  boards: (Board | null)[];
-}
-
-export default function FadeMenu(props: NavDropDownProps) {
+export default function FadeMenu() {
+  const store = useStore();
+  
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -40,8 +39,8 @@ export default function FadeMenu(props: NavDropDownProps) {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
-        {props.boards.length > 0 &&
-          props.boards.map((board) => <MenuItem>{board!.name}</MenuItem>)}
+        {store.boards.length > 0 &&
+          store.boards.map((board) => <MenuItem>{board!.name}</MenuItem>)}
       </Menu>
     </div>
   );

@@ -3,7 +3,7 @@ export interface Board {
     name: string;
     id: number;
     nextColumnId: number;
-    columns: (String|null) [];
+    columns: (Column|null) [];
   }
   export interface Column {
     name: string;
@@ -23,7 +23,27 @@ export interface Board {
     id: number;
     isCompleted: boolean;
   }
-  export interface BoardDisplayUnit {
-    boards: (Board | null)[];
-    currBoardIndex: number;
+  export interface FrontEndColumn {
+    name: string;
+    id: number;
+    nextTaskId: number;
+    tasks: FrontEndTask [];
+  }
+  export interface FrontEndBoard {
+    name: string;
+    id: number;
+    nextColumnId: number;
+    columns: FrontEndColumn [];
+  }
+  export interface FrontEndTask {
+    title: string;
+    id: number;
+    nextSubTaskId: number;
+    description: string;
+    subTasks: FrontEndSubTask[];
+  }
+  export interface FrontEndSubTask {
+    title: string;
+    id: number;
+    isCompleted: boolean;
   }
