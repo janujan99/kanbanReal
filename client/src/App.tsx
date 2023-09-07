@@ -51,7 +51,6 @@ function App() {
             {store.boards.length > 0 && <BoardDisplay />}
           </div>
         )}
-        <BoardCreationModal />
         {isMobile && (
           <div
             style={{
@@ -64,6 +63,7 @@ function App() {
             <BoardDisplay />
           </div>
         )}
+        <BoardCreationModal />
       </header>
     </div>
   );

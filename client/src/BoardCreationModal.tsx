@@ -44,7 +44,7 @@ export default function BoardCreationModal() {
   };
   return (
     <>
-      <Button onClick={handleOpen}>Open modal</Button>
+      <Button onClick={handleOpen}>Add Board</Button>
       <Modal
         open={open}
         onClose={handleClose}

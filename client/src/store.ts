@@ -13,11 +13,24 @@ type BoardStore = {
 const useStore = create<BoardStore>((set) => ({
   boards: [],
   currBoard: 0,
+  
+  fetchBoards: async () => {
+    try {
+      const response = await axios.get<{ boards: FrontEndBoard[] }>(
+        "http://localhost:3001/getBoards"
+      );
+      console.log("Response: ");
+      console.log(response.data.boards);
+      set({ boards: response.data.boards });
+    } catch (error) {
+      console.error("Error fetching items:", error);
+    }
+  },
   addBoard: async (b: AddBoardRequest) => {
     axios
       .post("http://localhost:3001/addBoard", b)
       .then((response) => {
-        // Handle successful response
+        useStore.getState().fetchBoards();
       })
       .catch((error) => {
         if (error.response) {
@@ -31,18 +44,7 @@ const useStore = create<BoardStore>((set) => ({
           console.error("Error:", error.message);
         }
       });
-  },
-  fetchBoards: async () => {
-    try {
-      const response = await axios.get<{ boards: FrontEndBoard[] }>(
-        "http://localhost:3001/getBoards"
-      );
-      console.log("Response: ");
-      console.log(response.data.boards);
-      set({ boards: response.data.boards });
-    } catch (error) {
-      console.error("Error fetching items:", error);
-    }
+      
   },
   setCurrentBoard: (i: number) => set((state) => ({ currBoard: i })),
 }));

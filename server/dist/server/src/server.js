@@ -21,11 +21,11 @@ app.get('/getBoards', (req, res) => {
         if (boardsFromBackend[i]) {
             let currBoard = getDeepCopy(boardsFromBackend[i]);
             let filteredColumns = [];
-            for (let j = 0; j < boardsFromBackend[i].columns.length; j++) {
+            for (let j = 0; boardsFromBackend[i].columns && j < boardsFromBackend[i].columns.length; j++) {
                 if (boardsFromBackend[i].columns[j]) {
                     let currColumn = getDeepCopy(boardsFromBackend[i].columns[j]);
                     let filteredTasks = [];
-                    for (let k = 0; k < boardsFromBackend[i].columns[j].tasks.length; k++) {
+                    for (let k = 0; boardsFromBackend[i].columns[j].tasks && k < boardsFromBackend[i].columns[j].tasks.length; k++) {
                         if (boardsFromBackend[i].columns[j].tasks[k]) {
                             let currTask = getDeepCopy(boardsFromBackend[i].columns[j].tasks[k]);
                             let filteredSubTasks = currTask.subTasks.filter((s) => s !== null);
@@ -46,10 +46,12 @@ app.get('/getBoards', (req, res) => {
 app.post('/addBoard', (req, res) => {
     console.log("Board ID: " + nextBoardId.toString());
     console.log(req.body);
-    let newBoard = { name: req.body.name, id: nextBoardId, nextColumnId: 0, columns: req.body.columns };
+    let cols = req.body.columns.map((colName, index) => { return { name: colName, id: index, nextTaskId: 0, tasks: [] }; });
+    let newBoard = { name: req.body.name, id: nextBoardId, nextColumnId: 0, columns: cols };
     boardsFromBackend.push(newBoard);
     // Process the received data (you can add your own logic here)
     nextBoardId += 1;
+    console.log(boardsFromBackend);
     res.status(200).send({ id: nextBoardId - 1 });
 });
 app.listen(PORT, () => {
