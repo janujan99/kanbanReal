@@ -5,6 +5,7 @@ import { AddBoardRequest, FrontEndBoard } from "../../kanbanTypes";
 type BoardStore = {
   boards: FrontEndBoard[];
   currBoard: number;
+  currBoardToSet: number;
   addBoard: (b: AddBoardRequest) => void;
   fetchBoards: () => void;
   setCurrentBoard: (i: number) => void;
@@ -12,8 +13,8 @@ type BoardStore = {
 
 const useStore = create<BoardStore>((set) => ({
   boards: [],
-  currBoard: 0,
-  
+  currBoard: -1,
+  currBoardToSet: -1,
   fetchBoards: async () => {
     try {
       const response = await axios.get<{ boards: FrontEndBoard[] }>(
@@ -30,6 +31,7 @@ const useStore = create<BoardStore>((set) => ({
     axios
       .post("http://localhost:3001/addBoard", b)
       .then((response) => {
+        useStore.getState().setCurrentBoard(response.data.boardIndex);
         useStore.getState().fetchBoards();
       })
       .catch((error) => {

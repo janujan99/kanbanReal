@@ -8,13 +8,8 @@ const cors_1 = __importDefault(require("cors"));
 function getDeepCopy(arg) {
     return JSON.parse(JSON.stringify(arg));
 }
-const app = (0, express_1.default)();
-const PORT = 3001;
-app.use(express_1.default.json());
-app.use((0, cors_1.default)());
-let boardsFromBackend = [];
-let nextBoardId = 0;
-app.get('/getBoards', (req, res) => {
+function getFilteredBoards() {
+    let b = boardsFromBackend;
     let filteredBoards = [];
     //filter out null boards, columns, tasks, subtasks for frontend
     for (let i = 0; i < boardsFromBackend.length; i++) {
@@ -41,19 +36,35 @@ app.get('/getBoards', (req, res) => {
             filteredBoards.push(currBoard);
         }
     }
-    res.status(200).json({ boards: filteredBoards });
+    return filteredBoards;
+}
+const app = (0, express_1.default)();
+const PORT = 3001;
+app.use(express_1.default.json());
+app.use((0, cors_1.default)());
+let boardsFromBackend = [];
+let nextBoardId = 0;
+//Boards
+app.get('/getBoards', (req, res) => {
+    res.status(200).json({ boards: getFilteredBoards() });
 });
 app.post('/addBoard', (req, res) => {
-    console.log("Board ID: " + nextBoardId.toString());
-    console.log(req.body);
     let cols = req.body.columns.map((colName, index) => { return { name: colName, id: index, nextTaskId: 0, tasks: [] }; });
     let newBoard = { name: req.body.name, id: nextBoardId, nextColumnId: 0, columns: cols };
     boardsFromBackend.push(newBoard);
     // Process the received data (you can add your own logic here)
     nextBoardId += 1;
     console.log(boardsFromBackend);
-    res.status(200).send({ id: nextBoardId - 1 });
+    let b = getFilteredBoards();
+    let frontEndBoardIndex = -1;
+    for (let i = 0; i < b.length; i++) {
+        if (b[i].name === req.body.name)
+            frontEndBoardIndex = i;
+    }
+    res.status(200).send({ boardIndex: frontEndBoardIndex });
 });
+//Columns
+//Tasks
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });

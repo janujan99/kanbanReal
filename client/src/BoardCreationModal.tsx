@@ -18,10 +18,9 @@ export default function BoardCreationModal() {
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("Random Title");
   const [columnNames, setColumnNames] = useState<string[]>([
-    "New Column",
-    "New Column",
+    "",
+    "",
   ]);
-  console.log("Cols: ", columnNames);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleTitleChange = (event: any) => setTitle(() => event.target.value);

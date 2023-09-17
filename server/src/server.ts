@@ -5,15 +5,8 @@ import {Board, Column, Task, SubTask, FrontEndBoard, FrontEndColumn, FrontEndTas
 function getDeepCopy(arg: any){
   return JSON.parse(JSON.stringify(arg));
 }
-
-const app = express();
-const PORT = 3001;
-app.use(express.json());
-app.use(cors());
-
-let boardsFromBackend: (Board | null)[] = [];
-let nextBoardId: number = 0;
-app.get('/getBoards', (req: Request, res: Response) => {
+function getFilteredBoards(){
+  let b = boardsFromBackend;
   let filteredBoards: FrontEndBoard[] = [];
   //filter out null boards, columns, tasks, subtasks for frontend
   for (let i = 0; i < boardsFromBackend.length; i++){
@@ -40,20 +33,37 @@ app.get('/getBoards', (req: Request, res: Response) => {
       filteredBoards.push(currBoard);
     }
   }
-  res.status(200).json({ boards: filteredBoards });
+  return filteredBoards;
+}
+const app = express();
+const PORT = 3001;
+app.use(express.json());
+app.use(cors());
+
+let boardsFromBackend: (Board | null)[] = [];
+let nextBoardId: number = 0;
+//Boards
+app.get('/getBoards', (req: Request, res: Response) => {
+  
+  res.status(200).json({ boards: getFilteredBoards() });
 });
 
 app.post('/addBoard', (req: Request, res: Response) => {
-  console.log("Board ID: " + nextBoardId.toString());
-  console.log(req.body);
   let cols: Column[] = req.body.columns.map((colName: string, index: number) => {return {name: colName, id: index, nextTaskId: 0, tasks: []}});
   let newBoard: Board = {name: req.body.name, id: nextBoardId, nextColumnId: 0, columns: cols}
   boardsFromBackend.push(newBoard);
   // Process the received data (you can add your own logic here)
   nextBoardId += 1;
   console.log(boardsFromBackend);
-  res.status(200).send({id: nextBoardId-1});
+  let b = getFilteredBoards();
+  let frontEndBoardIndex = -1;
+  for (let i = 0; i < b.length; i++){
+    if (b[i].name === req.body.name) frontEndBoardIndex = i;
+  }
+  res.status(200).send({boardIndex: frontEndBoardIndex});
 });
+//Columns
+//Tasks
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
