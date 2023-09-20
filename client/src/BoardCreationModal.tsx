@@ -41,6 +41,7 @@ export default function BoardCreationModal() {
     store.addBoard(request);
     handleClose();
   };
+  console.log(columnNames);
   return (
     <>
       <Button onClick={handleOpen}>Add Board</Button>
@@ -71,10 +72,11 @@ export default function BoardCreationModal() {
             {columnNames.map((name, i) => (
               <div>
                 <TextField
+                key={i}
                   required
                   id="outlined-required"
                   label="Required"
-                  defaultValue={name}
+                  value={name}
                   onChange={(event) => handleColumnNameChange(event, i)}
                 />
                 <Button onClick={() => deleteColumnName(i)}>

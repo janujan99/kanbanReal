@@ -29,10 +29,6 @@ function App() {
     store.fetchBoards();
     console.log("useEffect");
   }, []);
-  useEffect(() => {
-    if (store.currBoardToSet !== -1) store.setCurrentBoard(store.currBoardToSet);
-    console.log("useEffect");
-  }, [store.currBoardToSet]);
   return (
     <div className="App">
       <header className="App-header">
