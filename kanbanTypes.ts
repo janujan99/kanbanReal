@@ -1,3 +1,5 @@
+import { LargeNumberLike } from "crypto";
+
 //Back end structures
 export interface Board {
     name: string;
@@ -49,7 +51,16 @@ export interface Board {
     isCompleted: boolean;
   }
   //Request structures
+  //Boards
   export interface AddBoardRequest{
     name: string;
     columns: string[];
+  }
+  //Tasks
+  export interface AddTaskRequest{
+    title: string;
+    description: string;
+    boardToAddTaskTo: number;
+    columnToAddTaskTo: number;
+    subTasks: string[];
   }

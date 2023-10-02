@@ -62,7 +62,7 @@ export default function BoardCreationModal() {
             required
             id="outlined-required"
             label="Required"
-            defaultValue={title}
+            value={title}
             onChange={handleTitleChange}
           />
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>

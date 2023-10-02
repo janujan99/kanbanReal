@@ -50,11 +50,11 @@ app.get('/getBoards', (req: Request, res: Response) => {
 
 app.post('/addBoard', (req: Request, res: Response) => {
   let cols: Column[] = req.body.columns.map((colName: string, index: number) => {return {name: colName, id: index, nextTaskId: 0, tasks: []}});
-  let newBoard: Board = {name: req.body.name, id: nextBoardId, nextColumnId: 0, columns: cols}
+  let newBoard: Board = {name: req.body.name, id: nextBoardId, nextColumnId: 0, columns: cols};
   boardsFromBackend.push(newBoard);
   // Process the received data (you can add your own logic here)
   nextBoardId += 1;
-  console.log(boardsFromBackend);
+  //console.log(boardsFromBackend);
   let b = getFilteredBoards();
   let frontEndBoardIndex = -1;
   for (let i = 0; i < b.length; i++){
@@ -64,6 +64,29 @@ app.post('/addBoard', (req: Request, res: Response) => {
 });
 //Columns
 //Tasks
+app.post('/addTask', (req: Request, res: Response) => {
+  let subTasks: SubTask[] = req.body.subTasks.map((subTaskName: string, index: number) => {return {title: subTaskName, id: index, isCompleted: false}});
+  //get the board
+  let board: Board | null = getDeepCopy(boardsFromBackend[req.body.boardToAddTaskTo]);
+  let column: Column | null = getDeepCopy(board!.columns[req.body.columnToAddTaskTo]);
+  console.log("Add Task: ");
+  console.log(board);
+  console.log(column);
+  //make the task
+  let task: Task = {title: req.body.title, description: req.body.description, id: column!.nextTaskId, nextSubTaskId: subTasks.length, subTasks: subTasks};
+  column!.tasks.push(task);
+  column!.nextTaskId += 1;
+  board!.columns[req.body.columnToAddTaskTo] = getDeepCopy(column);
+  boardsFromBackend[req.body.boardToAddTaskTo] = getDeepCopy(board);
+  // Process the received data (you can add your own logic here)
+  //console.log(boardsFromBackend);
+  let b = getFilteredBoards();
+  let frontEndBoardIndex = -1;
+  for (let i = 0; i < b.length; i++){
+    if (b[i].name === board!.name) frontEndBoardIndex = i;
+  }
+  res.status(200).send({boardIndex: frontEndBoardIndex});
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

@@ -7,6 +7,7 @@ import LeftDrawer from "./LeftDrawer";
 import NavDropDown from "./NavDropDown";
 import useStore from "./store";
 import BoardCreationModal from "./BoardCreationModal";
+import TaskCreationModal from "./TaskCreationModal";
 function App() {
   const store = useStore();
   const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth <= 768);
@@ -63,6 +64,7 @@ function App() {
           </div>
         )}
         <BoardCreationModal />
+        {store.boards.length > 0 && <TaskCreationModal />}
       </header>
     </div>
   );

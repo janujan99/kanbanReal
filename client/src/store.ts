@@ -1,11 +1,12 @@
 import { create } from "zustand";
 import axios from "axios";
-import { AddBoardRequest, FrontEndBoard } from "../../kanbanTypes";
+import { AddBoardRequest, AddTaskRequest, FrontEndBoard } from "../../kanbanTypes";
 
 type BoardStore = {
   boards: FrontEndBoard[];
   currBoard: number;
   addBoard: (b: AddBoardRequest) => void;
+  addTask: (t: AddTaskRequest) => void;
   fetchBoards: () => void;
   setCurrentBoard: (i: number) => void;
 };
@@ -28,6 +29,27 @@ const useStore = create<BoardStore>((set) => ({
   addBoard: async (b: AddBoardRequest) => {
     axios
       .post("http://localhost:3001/addBoard", b)
+      .then((response) => {
+        useStore.getState().setCurrentBoard(response.data.boardIndex);
+        useStore.getState().fetchBoards();
+      })
+      .catch((error) => {
+        if (error.response) {
+          // Server responded with a non-2xx status code
+          console.error("Server error:", error.response.status);
+        } else if (error.request) {
+          // Request was made but no response received
+          console.error("No response received");
+        } else {
+          // Something else went wrong
+          console.error("Error:", error.message);
+        }
+      });
+      
+  },
+  addTask: async (b: AddTaskRequest) => {
+    axios
+      .post("http://localhost:3001/addTask", b)
       .then((response) => {
         useStore.getState().setCurrentBoard(response.data.boardIndex);
         useStore.getState().fetchBoards();
