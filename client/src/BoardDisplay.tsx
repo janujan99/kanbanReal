@@ -16,9 +16,7 @@ export default function BoardDisplay() {
             <h2>{col.name}</h2>
             {col.tasks.map((task: FrontEndTask) => (
               <TaskCard
-                name={task.title}
-                description={task.description}
-                id={task!.id}
+                task={task}
               />
             ))}
           </div>

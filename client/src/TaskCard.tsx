@@ -1,17 +1,17 @@
+import { FrontEndTask } from "../../kanbanTypes";
 import OutlinedCard from "./Card";
 
 interface TaskCardProps {
-  name: string;
-  id: number;
-  description: string;
+  task: FrontEndTask;
 }
 
 export default function TaskCard(props: TaskCardProps) {
   return (
     <OutlinedCard
-      name={props.name}
-      description={props.description}
-      id={props.id}
+      name={props.task.title}
+      description={props.task.description}
+      id={props.task.id}
+      subTasks={props.task.subTasks}
     ></OutlinedCard>
   );
 }

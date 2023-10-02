@@ -5,14 +5,19 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { FrontEndSubTask } from "../../kanbanTypes";
+import { count } from "console";
 
 
 interface CardProps{
     name: string;
     description: string;
     id: number;
+    subTasks: FrontEndSubTask[];
 }
 export default function OutlinedCard(props: CardProps) {
+  const countOccurrences = (arr: FrontEndSubTask[]) => arr.reduce((a, v) => (v.isCompleted === true ? a + 1 : a), 0);
+  let numCompleted: number  = countOccurrences(props.subTasks);
   return (
     <Box sx={{ minWidth: 275 }}>
       <Card variant="outlined">
@@ -23,6 +28,10 @@ export default function OutlinedCard(props: CardProps) {
             </Typography>
             <Typography variant="body2">
               {props.description}
+              <br />
+            </Typography>
+            <Typography variant="body2">
+              {numCompleted} of {props.subTasks.length} completed
               <br />
             </Typography>
           </CardContent>

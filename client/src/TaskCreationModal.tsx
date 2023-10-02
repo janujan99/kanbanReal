@@ -29,14 +29,13 @@ export default function TaskCreationModal() {
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("Random Title");
   const [description, setDescription] = useState<string>("Random Description");
-  const [columnToAddTaskTo, setColumnToAddTaskTo] = useState<number>(0);
+  const [columnToAddTaskTo, setColumnToAddTaskTo] = useState<string>('0');
   const [subTaskNames, setSubTaskNames] = useState<string[]>([]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleTitleChange = (event: any) => setTitle(() => event.target.value);
   const handleDescriptionChange = (event: any) =>
     setDescription(() => event.target.value);
-  const changeColumnOfTask = (i: number) => setColumnToAddTaskTo(() => i);
   const handleSubTaskNameChange = (event: any, index: number) => {
     let newColNames = JSON.parse(JSON.stringify(subTaskNames));
     newColNames[index] = event.target.value;
@@ -47,7 +46,7 @@ export default function TaskCreationModal() {
       title: title,
       description: description,
       boardToAddTaskTo: store.boards[store.currBoard].id,
-      columnToAddTaskTo: columnToAddTaskTo,
+      columnToAddTaskTo: +columnToAddTaskTo,
       subTasks: subTaskNames,
     };
     store.addTask(request);
@@ -63,7 +62,7 @@ export default function TaskCreationModal() {
     );
   };
   const handleChange = (event: SelectChangeEvent) => {
-    setColumnToAddTaskTo(event.target.value as unknown as number);
+    setColumnToAddTaskTo(event.target.value as string);
   };
   console.log(columnToAddTaskTo);
   return (
@@ -109,7 +108,7 @@ export default function TaskCreationModal() {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={
-                  store.boards[store.currBoard].columns[columnToAddTaskTo].name
+                  store.boards[store.currBoard].columns[+columnToAddTaskTo].name
                 }
                 label="Column"
                 onChange={handleChange}
