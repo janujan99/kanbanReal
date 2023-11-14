@@ -56,6 +56,11 @@ export interface Board {
     name: string;
     columns: string[];
   }
+  export interface EditBoardRequest{
+    id: number;
+    newName: string;
+    newColumnNames: string;
+  }
   //Tasks
   export interface AddTaskRequest{
     title: string;
@@ -64,3 +69,4 @@ export interface Board {
     columnToAddTaskTo: number;
     subTasks: string[];
   }
+  

@@ -18,8 +18,8 @@ export default function BoardCreationModal() {
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("Random Title");
   const [columnNames, setColumnNames] = useState<string[]>([
-    "",
-    "",
+    "Column 1",
+    "Column 2",
   ]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -37,6 +37,11 @@ export default function BoardCreationModal() {
     setColumnNames(() => newColNames);
   };
   const handleSubmit = () => {
+    setTitle(() => "Random Title");
+    setColumnNames(() => [
+      "Column 1",
+      "Column 2",
+    ]);
     let request: AddBoardRequest = {name: title, columns: columnNames};
     store.addBoard(request);
     handleClose();

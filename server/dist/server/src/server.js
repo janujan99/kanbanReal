@@ -50,15 +50,16 @@ app.get('/getBoards', (req, res) => {
 });
 app.post('/addBoard', (req, res) => {
     let cols = req.body.columns.map((colName, index) => { return { name: colName, id: index, nextTaskId: 0, tasks: [] }; });
-    let newBoard = { name: req.body.name, id: nextBoardId, nextColumnId: 0, columns: cols };
+    let newBoard = { name: req.body.name, id: nextBoardId, nextColumnId: cols.length, columns: cols };
     boardsFromBackend.push(newBoard);
+    console.log(boardsFromBackend);
     // Process the received data (you can add your own logic here)
     nextBoardId += 1;
     //console.log(boardsFromBackend);
     let b = getFilteredBoards();
     let frontEndBoardIndex = -1;
     for (let i = 0; i < b.length; i++) {
-        if (b[i].name === req.body.name)
+        if (b[i].id === nextBoardId - 1)
             frontEndBoardIndex = i;
     }
     res.status(200).send({ boardIndex: frontEndBoardIndex });
@@ -84,7 +85,7 @@ app.post('/addTask', (req, res) => {
     let b = getFilteredBoards();
     let frontEndBoardIndex = -1;
     for (let i = 0; i < b.length; i++) {
-        if (b[i].name === board.name)
+        if (b[i].id === req.body.boardToAddTaskTo)
             frontEndBoardIndex = i;
     }
     res.status(200).send({ boardIndex: frontEndBoardIndex });

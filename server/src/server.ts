@@ -50,17 +50,45 @@ app.get('/getBoards', (req: Request, res: Response) => {
 
 app.post('/addBoard', (req: Request, res: Response) => {
   let cols: Column[] = req.body.columns.map((colName: string, index: number) => {return {name: colName, id: index, nextTaskId: 0, tasks: []}});
-  let newBoard: Board = {name: req.body.name, id: nextBoardId, nextColumnId: 0, columns: cols};
+  let newBoard: Board = {name: req.body.name, id: nextBoardId, nextColumnId: cols.length, columns: cols};
   boardsFromBackend.push(newBoard);
+  console.log(boardsFromBackend);
   // Process the received data (you can add your own logic here)
   nextBoardId += 1;
   //console.log(boardsFromBackend);
   let b = getFilteredBoards();
   let frontEndBoardIndex = -1;
   for (let i = 0; i < b.length; i++){
-    if (b[i].name === req.body.name) frontEndBoardIndex = i;
+    if (b[i].id === nextBoardId-1) frontEndBoardIndex = i;
   }
   res.status(200).send({boardIndex: frontEndBoardIndex});
+});
+
+app.post('/editBoard', (req: Request, res: Response) => {
+  let newBoard: Board = getDeepCopy(boardsFromBackend[req.body.id]);
+  newBoard.name = req.body.newName;
+  let newNamePointer = 0;
+  let currColumnsPointer = 0;
+  while (newNamePointer < req.body.newColumnNames.length && currColumnsPointer < newBoard.columns.length){
+    if (newBoard.columns[currColumnsPointer]){
+      newBoard.columns[currColumnsPointer]!.name = req.body.newColumnNames[newNamePointer];
+      newNamePointer += 1;
+    }
+    currColumnsPointer += 1;
+  }
+  if (newNamePointer < req.body.newColumnNames.length){
+    //this means that there are more columns that need to be added
+    while (newNamePointer < req.body.newColumnNames.length){
+      newBoard.columns.push({name: req.body.newColumnNames[newNamePointer], id: newBoard.nextColumnId, nextTaskId: 0, tasks: []});
+      newBoard.nextColumnId += 1;
+      newNamePointer += 1;
+    }
+  }
+
+  if (currColumnsPointer < newBoard.columns.length){
+    //this means columns have been deleted
+    newBoard.columns = newBoard.columns.slice(0, currColumnsPointer);
+  }
 });
 //Columns
 //Tasks
@@ -83,7 +111,7 @@ app.post('/addTask', (req: Request, res: Response) => {
   let b = getFilteredBoards();
   let frontEndBoardIndex = -1;
   for (let i = 0; i < b.length; i++){
-    if (b[i].name === board!.name) frontEndBoardIndex = i;
+    if (b[i].id === req.body.boardToAddTaskTo) frontEndBoardIndex = i;
   }
   res.status(200).send({boardIndex: frontEndBoardIndex});
 });
