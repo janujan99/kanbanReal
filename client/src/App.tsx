@@ -9,6 +9,7 @@ import useStore from "./store";
 import BoardCreationModal from "./BoardCreationModal";
 import TaskCreationModal from "./TaskCreationModal";
 function App() {
+  
   const store = useStore();
   const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth <= 768);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
@@ -31,7 +32,7 @@ function App() {
     console.log("useEffect");
   }, []);
   return (
-    <div className="App">
+    <div className="App" style={{backgroundImage: 'url("http://localhost:3002/sky.jpg") left'}}>
       <header className="App-header">
         {!isMobile && (
           <div

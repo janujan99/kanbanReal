@@ -10,7 +10,7 @@ export default function BoardDisplay() {
   console.log(store.boards[store.currBoard]);
   if (store.boards[store.currBoard] !== undefined)
     return (
-      <div style={{ display: "flex", flexDirection: "row" }}>
+      <div style={{ display: "flex", flexDirection: "row", height: "100%" }}>
         {store.boards[store.currBoard].columns.map((col: FrontEndColumn) => (
           <div style={{ display: "flex", flexDirection: "column" }}>
             <h2>{col.name}</h2>

@@ -59,7 +59,7 @@ export interface Board {
   export interface EditBoardRequest{
     id: number;
     newName: string;
-    newColumnNames: string;
+    newColumnNames: string[];
   }
   //Tasks
   export interface AddTaskRequest{

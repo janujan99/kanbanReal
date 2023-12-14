@@ -64,6 +64,31 @@ app.post('/addBoard', (req, res) => {
     }
     res.status(200).send({ boardIndex: frontEndBoardIndex });
 });
+app.post('/editBoard', (req, res) => {
+    let newBoard = getDeepCopy(boardsFromBackend[req.body.id]);
+    newBoard.name = req.body.newName;
+    let newNamePointer = 0;
+    let currColumnsPointer = 0;
+    while (newNamePointer < req.body.newColumnNames.length && currColumnsPointer < newBoard.columns.length) {
+        if (newBoard.columns[currColumnsPointer]) {
+            newBoard.columns[currColumnsPointer].name = req.body.newColumnNames[newNamePointer];
+            newNamePointer += 1;
+        }
+        currColumnsPointer += 1;
+    }
+    if (newNamePointer < req.body.newColumnNames.length) {
+        //this means that there are more columns that need to be added
+        while (newNamePointer < req.body.newColumnNames.length) {
+            newBoard.columns.push({ name: req.body.newColumnNames[newNamePointer], id: newBoard.nextColumnId, nextTaskId: 0, tasks: [] });
+            newBoard.nextColumnId += 1;
+            newNamePointer += 1;
+        }
+    }
+    if (currColumnsPointer < newBoard.columns.length) {
+        //this means columns have been deleted
+        newBoard.columns = newBoard.columns.slice(0, currColumnsPointer);
+    }
+});
 //Columns
 //Tasks
 app.post('/addTask', (req, res) => {
