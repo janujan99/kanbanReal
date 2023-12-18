@@ -7,11 +7,13 @@ interface TaskCardProps {
 
 export default function TaskCard(props: TaskCardProps) {
   return (
-    <OutlinedCard
-      name={props.task.title}
-      description={props.task.description}
-      id={props.task.id}
-      subTasks={props.task.subTasks}
-    ></OutlinedCard>
+    <div>
+      <OutlinedCard
+        name={props.task.title}
+        description={props.task.description}
+        id={props.task.id}
+        subTasks={props.task.subTasks}
+      ></OutlinedCard>
+    </div>
   );
 }

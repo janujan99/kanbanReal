@@ -22,14 +22,14 @@ export default function OutlinedCard(props: CardProps) {
       <Card variant="outlined">
         <React.Fragment>
           <CardContent>
-            <Typography variant="h5" component="div">
+            <Typography variant="h5" component="div" style={{fontFamily:"outfit"}}>
               {props.name}
             </Typography>
-            <Typography variant="body2">
+            <Typography variant="body2" style={{fontFamily:"outfit"}}>
               {props.description}
               <br />
             </Typography>
-            <Typography variant="body2">
+            <Typography variant="body2" style={{fontFamily:"outfit"}}>
               {numCompleted} of {props.subTasks.length} completed
               <br />
             </Typography>

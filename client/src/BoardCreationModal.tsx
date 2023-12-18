@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Box, Typography, Modal, TextField } from "@mui/material";
 import useStore from "./store";
 import { AddBoardRequest, Board } from "../../kanbanTypes";
+import "./BoardCreationModal.css";
 export default function BoardCreationModal() {
   const style = {
     position: "absolute" as "absolute",
@@ -49,7 +50,7 @@ export default function BoardCreationModal() {
   console.log(columnNames);
   return (
     <>
-      <Button onClick={handleOpen}>Add Board</Button>
+      <Button onClick={handleOpen} className="addBoardButton">Add Board</Button>
       <Modal
         open={open}
         onClose={handleClose}

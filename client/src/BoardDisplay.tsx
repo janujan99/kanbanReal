@@ -2,6 +2,7 @@ import React from "react";
 import TaskCard from "./TaskCard";
 import useStore from "./store";
 import { FrontEndColumn, FrontEndTask } from "../../kanbanTypes";
+import "./BoardDisplay.css";
 
 export default function BoardDisplay() {
   const store = useStore();
@@ -12,8 +13,8 @@ export default function BoardDisplay() {
     return (
       <div style={{ display: "flex", flexDirection: "row", height: "100%" }}>
         {store.boards[store.currBoard].columns.map((col: FrontEndColumn) => (
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <h2>{col.name}</h2>
+          <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", margin: 10 }}>
+            <h2 className="columnHeader">{col.name}</h2>
             {col.tasks.map((task: FrontEndTask) => (
               <TaskCard
                 task={task}

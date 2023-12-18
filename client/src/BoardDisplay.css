@@ -1,0 +1,6 @@
+h2.columnHeader{
+  color: white;  
+    display: flex;
+    justify-content: center;
+    font-family: 'outfit';
+}

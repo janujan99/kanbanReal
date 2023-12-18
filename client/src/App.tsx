@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Drawer } from "@mui/material";
-import { Board} from "../../kanbanTypes";
+import { Board } from "../../kanbanTypes";
 import BoardDisplay from "./BoardDisplay";
 import axios from "axios";
 import LeftDrawer from "./LeftDrawer";
@@ -8,8 +8,10 @@ import NavDropDown from "./NavDropDown";
 import useStore from "./store";
 import BoardCreationModal from "./BoardCreationModal";
 import TaskCreationModal from "./TaskCreationModal";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { FaEllipsisV } from "react-icons/fa";
+
 function App() {
-  
   const store = useStore();
   const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth <= 768);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
@@ -32,7 +34,10 @@ function App() {
     console.log("useEffect");
   }, []);
   return (
-    <div className="App" style={{backgroundImage: 'url("http://localhost:3002/sky.jpg") left'}}>
+    <div
+      className="App"
+      style={{ backgroundImage: 'url("http://localhost:3002/sky.jpg")' }}
+    >
       <header className="App-header">
         {!isMobile && (
           <div
@@ -42,12 +47,24 @@ function App() {
               justifyContent: "left",
             }}
           >
-            <Button onClick={toggleDrawer}>Toggle Drawer</Button>
             {store.boards.length > 0 && (
-              <LeftDrawer
-                open={drawerOpen}
-                onClose={toggleDrawer}
-              />
+              <div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div onClick={toggleDrawer} style={{ margin: 10 }}>
+                    <GiHamburgerMenu color="white" />
+                  </div>
+                  <div style={{ margin: 10 }}>
+                    <FaEllipsisV color="white" />
+                  </div>
+                </div>
+                <LeftDrawer open={drawerOpen} onClose={toggleDrawer} />
+              </div>
             )}
             {store.boards.length > 0 && <BoardDisplay />}
           </div>
@@ -60,7 +77,12 @@ function App() {
               justifyContent: "left",
             }}
           >
-            <NavDropDown />
+            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+              <NavDropDown />
+              <div style={{ margin: 10 }}>
+                <FaEllipsisV color="white" />
+              </div>
+            </div>
             <BoardDisplay />
           </div>
         )}
