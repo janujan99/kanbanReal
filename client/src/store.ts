@@ -5,18 +5,20 @@ import { AddBoardRequest, AddTaskRequest, EditBoardRequest, FrontEndBoard } from
 type BoardStore = {
   boards: FrontEndBoard[];
   currBoard: number;
-  subTaskModalOpen: boolean;
+  taskEditorModalOpen: boolean;
   addBoard: (b: AddBoardRequest) => void;
   editBoard: (b: EditBoardRequest) => void;
   addTask: (t: AddTaskRequest) => void;
   fetchBoards: () => void;
   setCurrentBoard: (i: number) => void;
+  toggleTaskEditorModal: () => void;
+  //setCurrentTask: (boardId: number, columnId: number, taskId: number) => void;
 };
 
 const useStore = create<BoardStore>((set) => ({
   boards: [],
   currBoard: -1,
-  subTaskModalOpen: false,
+  taskEditorModalOpen: false,
   fetchBoards: async () => {
     try {
       const response = await axios.get<{ boards: FrontEndBoard[] }>(
@@ -92,6 +94,7 @@ const useStore = create<BoardStore>((set) => ({
       
   },
   setCurrentBoard: (i: number) => set((state) => ({ currBoard: i })),
+  toggleTaskEditorModal: () => set((state) => ({taskEditorModalOpen: !state.taskEditorModalOpen})),
 }));
 
 export default useStore;

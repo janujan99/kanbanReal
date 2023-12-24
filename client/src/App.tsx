@@ -8,6 +8,7 @@ import NavDropDown from "./NavDropDown";
 import useStore from "./store";
 import BoardCreationModal from "./BoardCreationModal";
 import TaskCreationModal from "./TaskCreationModal";
+import TaskEditorModal from "./TaskEditorModal";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaEllipsisV } from "react-icons/fa";
 
@@ -33,6 +34,7 @@ function App() {
     store.fetchBoards();
     console.log("useEffect");
   }, []);
+
   return (
     <div
       className="App"
@@ -88,6 +90,7 @@ function App() {
         )}
         <BoardCreationModal />
         {store.boards.length > 0 && <TaskCreationModal />}
+        {store.boards.length > 0 && <TaskEditorModal />}
       </header>
     </div>
   );

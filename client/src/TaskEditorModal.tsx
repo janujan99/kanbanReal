@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Box,
@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import useStore from "./store";
 import { AddTaskRequest, Board, FrontEndColumn } from "../../kanbanTypes";
-export default function TaskCreationModal() {
+export default function TaskEditorModal() {
   const style = {
     position: "absolute" as "absolute",
     top: "50%",
@@ -25,14 +25,20 @@ export default function TaskCreationModal() {
     boxShadow: 24,
     p: 4,
   };
+  
   const store = useStore();
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState(store.taskEditorModalOpen);
+  useEffect(() => {
+    setOpen(() => store.taskEditorModalOpen);
+  },[store.taskEditorModalOpen]);
+  console.log(open);
+  console.log(store.taskEditorModalOpen);
   const [title, setTitle] = useState<string>("Random Title");
   const [description, setDescription] = useState<string>("Random Description");
   const [columnToAddTaskTo, setColumnToAddTaskTo] = useState<string>('0');
   const [subTaskNames, setSubTaskNames] = useState<string[]>(["Random Subtask"]);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => store.toggleTaskEditorModal();
+  const handleClose = () => store.toggleTaskEditorModal();
   const handleTitleChange = (event: any) => setTitle(() => event.target.value);
   const handleDescriptionChange = (event: any) =>
     setDescription(() => event.target.value);
@@ -72,7 +78,6 @@ export default function TaskCreationModal() {
   console.log(store.boards[store.currBoard]);
   if(store.boards[store.currBoard]) return (
     <>
-      <Button onClick={handleOpen}>Add Task</Button>
       <Modal
         open={open}
         onClose={handleClose}

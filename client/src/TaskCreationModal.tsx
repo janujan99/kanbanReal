@@ -55,7 +55,7 @@ export default function TaskCreationModal() {
     store.addTask(request);
     handleClose();
   };
-  const addSubTaskName = () =>
+  const addSubTaskName = () => 
     setSubTaskNames(() =>
       JSON.parse(JSON.stringify(subTaskNames)).concat("New Column")
     );
